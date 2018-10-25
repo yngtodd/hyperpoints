@@ -15,7 +15,7 @@
     :target: https://circleci.com/gh/yngtodd/hyperpoints
 
 ===========
-hyperpoints
+Hyperpoints
 ===========
 
 Distributed hyperparameter optimization and reinforcement learning algorithms.
