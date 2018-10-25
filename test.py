@@ -1,3 +1,4 @@
+import time
 import torch
 import torch.optim as optim
 
@@ -22,7 +23,8 @@ from vel.api.info import TrainingInfo, EpochInfo
 
 
 def breakout_a2c():
-    device = torch.device('cuda:0')
+    start = time.time()
+    device = torch.device('cuda:3')
     seed = 1001
 
     # Set random seed in python std lib, numpy and pytorch
@@ -79,7 +81,8 @@ def breakout_a2c():
     training_info.on_train_begin()
 
     # Let's make 100 batches per epoch to average metrics nicely
-    num_epochs = int(1.1e7 / (5 * 16) / 100)
+    #num_epochs = int(1.1e7 / (5 * 16) / 100)
+    num_epochs = 100
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
@@ -93,6 +96,7 @@ def breakout_a2c():
         reinforcer.train_epoch(epoch_info)
 
     training_info.on_train_end()
+    print(f'Runtime: {time.time() - start}')
 
 
 if __name__ == '__main__':
