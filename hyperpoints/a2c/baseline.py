@@ -37,11 +37,11 @@ def breakout_a2c():
         ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
     ).instantiate(parallel_envs=16, seed=seed)
 
-    hparams = Config(3,3,3)
-
     # Again, use a helper to create a model
     # But because model is owned by the reinforcer, model should not be accessed using this variable
     # but from reinforcer.model property
+    hparams = Config(kernel1=8,kernel2=4,kernel3=3)
+
     model = PolicyGradientModelFactory(
         backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4, hparams=hparams)
     ).instantiate(action_space=vec_env.action_space)
