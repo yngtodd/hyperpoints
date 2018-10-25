@@ -2,7 +2,7 @@
 
     <embed>
         <p align="center">
-            <img width="500" src="https://github.com/yngtodd/hyperpoints/blob/master/img/banner.png">
+            <img width="600" src="https://github.com/yngtodd/hyperpoints/blob/master/img/banner.png">
         </p>
     </embed>
 
