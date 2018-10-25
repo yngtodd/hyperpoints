@@ -11,6 +11,7 @@ from vel.rl.vecenv.subproc import SubprocVecEnvWrapper
 
 from vel.rl.models.policy_gradient_model import PolicyGradientModelFactory
 from vel.rl.models.backbone.nature_cnn import NatureCnnFactory
+from vel.rl.models.backbone.nature_cnn import Config
 
 from vel.rl.reinforcers.on_policy_iteration_reinforcer import (
     OnPolicyIterationReinforcer, OnPolicyIterationReinforcerSettings
@@ -36,11 +37,13 @@ def breakout_a2c():
         ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
     ).instantiate(parallel_envs=16, seed=seed)
 
+    hparams = Config(3,3,3)
+
     # Again, use a helper to create a model
     # But because model is owned by the reinforcer, model should not be accessed using this variable
     # but from reinforcer.model property
     model = PolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4)
+        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4, hparams=hparams)
     ).instantiate(action_space=vec_env.action_space)
 
     # Reinforcer - an object managing the learning process
@@ -81,8 +84,8 @@ def breakout_a2c():
     training_info.on_train_begin()
 
     # Let's make 100 batches per epoch to average metrics nicely
-    #num_epochs = int(1.1e7 / (5 * 16) / 100)
-    num_epochs = 100
+    num_epochs = int(1.1e7 / (5 * 16) / 100)
+    #num_epochs = 100
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
