@@ -3,10 +3,8 @@
 import os
 import sys
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
+from setuptools import find_packages
 
 
 if sys.argv[-1] == 'publish':
@@ -29,10 +27,7 @@ setup(
     author='Todd Young',
     author_email='youngmt1@ornl.gov',
     url='https://github.com/yngtodd/hyperpoints',
-    packages=[
-        'hyperpoints',
-    ],
-    package_dir={'hyperpoints': 'hyperpoints'},
+    packages=find_packages(),
     include_package_data=True,
     install_requires=[
     ],
