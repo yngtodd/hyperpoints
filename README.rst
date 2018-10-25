@@ -19,3 +19,35 @@ hyperpoints
 ===========
 
 Distributed hyperparameter optimization and reinforcement learning algorithms.
+
+Documentation
+--------------
+
+For references, tutorials, and examples check out our `documentation`_.
+
+Installation
+------------
+
+From Sources:
+
+You can either clone the public repository:
+
+.. code-block:: console
+
+    git clone git://github.com/yngtodd/molecules
+
+Or download the `tarball`_:
+
+.. code-block:: console
+
+    curl  -OL https://github.com/yngtodd/molecules/tarball/master
+
+Once you have a copy of the source, you can install it with:
+
+.. code-block:: console
+
+    python setup.py install
+
+
+.. _tarball: https://github.com/yngtodd/hyperpoints/tarball/master
+.. _documentation: https://hyperpoints.readthedocs.io/en/latest
