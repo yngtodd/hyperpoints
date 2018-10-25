@@ -12,7 +12,7 @@ class Hyperparameters:
 
 class DQN(nn.Module):
 
-    def __init__(self, config=Hyperparameters()):
+    def __init__(self, num_actions=2, config=Hyperparameters()):
         super(DQN, self).__init__()
         self.hparams = config
         self.conv1 = nn.Conv2d(3, 16, kernel_size=self.hparams.kernel1, stride=2)
@@ -21,11 +21,10 @@ class DQN(nn.Module):
         self.bn2 = nn.BatchNorm2d(32)
         self.conv3 = nn.Conv2d(32, 32, kernel_size=self.hparams.kernel3, stride=2)
         self.bn3 = nn.BatchNorm2d(32)
-        self.head = nn.Linear(448, 2)
+        self.head = nn.Linear(448, num_actions)
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.relu(self.bn3(self.conv3(x)))
         return self.head(x.view(x.size(0), -1))
-
