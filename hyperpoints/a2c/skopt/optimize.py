@@ -29,6 +29,7 @@ from skopt import dump
 
 def objective(hparams):
     kernel1, kernel2, kernel3, discount_factor = hparams
+    print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
 
     hparams = Config(kernel1, kernel2, kernel3)
 
@@ -113,7 +114,7 @@ def main():
     ).instantiate(parallel_envs=16, seed=seed)
 
 
-    space = [(2,10), (2,10), (2,10), (0.00, .99)]
+    space = [(3,8), (3,8), (3,5), (0.00, .99)]
     res_gp = gp_minimize(objective, space, n_calls=50, random_state=0, verbose=True)
     dump(res_gp, 'result200.pkl')
     #print(f'Runtime: {time.time() - start}')
