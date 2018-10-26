@@ -31,6 +31,19 @@ def objective(hparams):
     kernel1, kernel2, kernel3, discount_factor = hparams
     print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
 
+    device = torch.device('cuda:3')
+    seed = 1001
+
+    # Set random seed in python std lib, numpy and pytorch
+    set_seed(seed)
+
+    # Create 16 environments evaluated in parallel in sub processess with all usual DeepMind     wrappers
+    # These are just helper functions for that
+    global vec_env
+    vec_env = SubprocVecEnvWrapper(
+        ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
+    ).instantiate(parallel_envs=16, seed=seed)
+
     hparams = Config(kernel1, kernel2, kernel3)
 
     model = PolicyGradientModelFactory(
@@ -99,21 +112,6 @@ def objective(hparams):
 
 def main():
     start = time.time()
-    global device
-    device = torch.device('cuda:3')
-    seed = 1001
-
-    # Set random seed in python std lib, numpy and pytorch
-    set_seed(seed)
-
-    # Create 16 environments evaluated in parallel in sub processess with all usual DeepMind wrappers
-    # These are just helper functions for that
-    global vec_env
-    vec_env = SubprocVecEnvWrapper(
-        ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
-    ).instantiate(parallel_envs=16, seed=seed)
-
-
     space = [(3,8), (3,8), (3,5), (0.00, .99)]
     res_gp = gp_minimize(objective, space, n_calls=50, random_state=0, verbose=True)
     dump(res_gp, 'result200.pkl')
