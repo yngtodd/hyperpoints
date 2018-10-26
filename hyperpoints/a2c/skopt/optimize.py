@@ -23,7 +23,7 @@ from vel.rl.env_roller.vec.step_env_roller import StepEnvRoller
 from vel.api.info import TrainingInfo, EpochInfo
 
 
-def breakout_a2c():
+def main():
     start = time.time()
     device = torch.device('cuda:3')
     seed = 1001

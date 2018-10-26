@@ -1,4 +1,6 @@
 import time
+import numpy as np
+
 import torch
 import torch.optim as optim
 
@@ -85,7 +87,7 @@ def breakout_a2c():
 
     # Let's make 100 batches per epoch to average metrics nicely
     #num_epochs = int(1.1e7 / (5 * 16) / 100)
-    num_epochs = 1
+    num_epochs = 2
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
@@ -98,8 +100,13 @@ def breakout_a2c():
 
         reinforcer.train_epoch(epoch_info)
 
-    history = training_info.on_train_end()
-    print(history)
+    training_info.on_train_end()
+
+    # Use the average of the last 25 rewards to determine score.
+    history = training_info.history.frame()
+    score = np.array(history['episode_rewards'])
+    print(sum(score[-2:])/2)
+
     print(f'Runtime: {time.time() - start}')
 
 
