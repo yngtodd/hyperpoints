@@ -28,7 +28,7 @@ from skopt import dump
 
 
 def objective(hparams):
-    kernel1, kernel2, kernel3, discount_factor = params
+    kernel1, kernel2, kernel3, discount_factor = hparams
 
     hparams = Config(kernel1, kernel2, kernel3)
 
@@ -98,6 +98,7 @@ def objective(hparams):
 
 def main():
     start = time.time()
+    global device
     device = torch.device('cuda:3')
     seed = 1001
 
@@ -106,6 +107,7 @@ def main():
 
     # Create 16 environments evaluated in parallel in sub processess with all usual DeepMind wrappers
     # These are just helper functions for that
+    global vec_env
     vec_env = SubprocVecEnvWrapper(
         ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
     ).instantiate(parallel_envs=16, seed=seed)
@@ -118,4 +120,4 @@ def main():
 
 
 if __name__ == '__main__':
-    breakout_a2c()
+    main()
