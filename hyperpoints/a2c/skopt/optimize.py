@@ -92,7 +92,7 @@ def objective(hparams):
     # Use the average of the last 50 rewards to determine score.
     history = training_info.history.frame()
     rewards = np.array(history['episode_rewards'])
-    endgame_average = sum(rewards[-50:])/50)
+    endgame_average = sum(rewards[-50:])/50
     return endgame_average
 
 
@@ -114,7 +114,7 @@ def main():
     space = [(2,10), (2,10), (2,10), (0.00, .99)]
     res_gp = gp_minimize(objective, space, n_calls=50, random_state=0, verbose=True)
     dump(res_gp, 'result200.pkl')
-    print(f'Runtime: {time.time() - start}')
+    #print(f'Runtime: {time.time() - start}')
 
 
 if __name__ == '__main__':
