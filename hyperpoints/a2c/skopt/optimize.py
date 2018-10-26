@@ -22,25 +22,15 @@ from vel.rl.env_roller.vec.step_env_roller import StepEnvRoller
 
 from vel.api.info import TrainingInfo, EpochInfo
 
+import numpy as np
+from skopt import gp_minimize
+from skopt import dump
 
-def main():
-    start = time.time()
-    device = torch.device('cuda:3')
-    seed = 1001
 
-    # Set random seed in python std lib, numpy and pytorch
-    set_seed(seed)
+def objective(hparams):
+    kernel1, kernel2, kernel3, discount_factor = params
 
-    # Create 16 environments evaluated in parallel in sub processess with all usual DeepMind wrappers
-    # These are just helper functions for that
-    vec_env = SubprocVecEnvWrapper(
-        ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
-    ).instantiate(parallel_envs=16, seed=seed)
-
-    # Again, use a helper to create a model
-    # But because model is owned by the reinforcer, model should not be accessed using this variable
-    # but from reinforcer.model property
-    hparams = Config(kernel1=8,kernel2=4,kernel3=3)
+    hparams = Config(kernel1, kernel2, kernel3)
 
     model = PolicyGradientModelFactory(
         backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4, hparams=hparams)
@@ -50,7 +40,7 @@ def main():
     reinforcer = OnPolicyIterationReinforcer(
         device=device,
         settings=OnPolicyIterationReinforcerSettings(
-            discount_factor=0.99,
+            discount_factor=discount_factor,
             batch_size=256
         ),
         model=model,
@@ -63,7 +53,7 @@ def main():
             environment=vec_env,
             device=device,
             number_of_steps=5,
-            discount_factor=0.99,
+            discount_factor=discount_factor,
         )
     )
 
@@ -84,8 +74,8 @@ def main():
     training_info.on_train_begin()
 
     # Let's make 100 batches per epoch to average metrics nicely
-    num_epochs = int(1.1e7 / (5 * 16) / 100)
-    #num_epochs = 100
+    #num_epochs = int(1.1e7 / (5 * 16) / 100)
+    num_epochs = 200
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
@@ -99,6 +89,31 @@ def main():
         reinforcer.train_epoch(epoch_info)
 
     training_info.on_train_end()
+    # Use the average of the last 50 rewards to determine score.
+    history = training_info.history.frame()
+    rewards = np.array(history['episode_rewards'])
+    endgame_average = sum(rewards[-50:])/50)
+    return endgame_average
+
+
+def main():
+    start = time.time()
+    device = torch.device('cuda:3')
+    seed = 1001
+
+    # Set random seed in python std lib, numpy and pytorch
+    set_seed(seed)
+
+    # Create 16 environments evaluated in parallel in sub processess with all usual DeepMind wrappers
+    # These are just helper functions for that
+    vec_env = SubprocVecEnvWrapper(
+        ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
+    ).instantiate(parallel_envs=16, seed=seed)
+
+
+    space = [(2,10), (2,10), (2,10), (0.00, .99)]
+    res_gp = gp_minimize(objective, space, n_calls=50, random_state=0, verbose=True)
+    dump(res_gp, 'result200.pkl')
     print(f'Runtime: {time.time() - start}')
 
 
