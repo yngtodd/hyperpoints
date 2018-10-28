@@ -24,16 +24,15 @@ from vel.api.info import TrainingInfo, EpochInfo
 
 import numpy as np
 from skopt import dump
-from skopt import gp_minimize
-from skopt.callbacks import CheckpointSaver
+from hyperspace import hyperband
 
 
-def objective(hparams):
+def objective(hparams, iterations):
     kernel1, kernel2, kernel3, discount_factor = hparams
     print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
     discount_factor = float(discount_factor)
 
-    device = torch.device('cuda')
+    device = torch.device('cuda:3')
     seed = 1001
 
     # Set random seed in python std lib, numpy and pytorch
@@ -91,7 +90,7 @@ def objective(hparams):
 
     # Let's make 100 batches per epoch to average metrics nicely
     #num_epochs = int(1.1e7 / (5 * 16) / 100)
-    num_epochs = 200
+    num_epochs = iterations
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
@@ -114,10 +113,9 @@ def objective(hparams):
 
 def main():
     start = time.time()
-    checkpoint_saver = CheckpointSaver("./checkpoint.pkl")
     space = [(2,10), (2,8), (3,8), (0.00, .99)]
-    res_gp = gp_minimize(objective, space, n_calls=20, random_state=0, callback=[checkpoint_saver], verbose=True)
-    dump(res_gp, 'result200.pkl')
+    res = hyperband(objective, space, 20, max_iter=200, eta=3, verbose=True, random_state=0)
+    dump(res, 'result200.pkl')
     print(f'Runtime: {time.time() - start}')
 
 

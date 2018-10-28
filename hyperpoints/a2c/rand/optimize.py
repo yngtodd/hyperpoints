@@ -24,7 +24,7 @@ from vel.api.info import TrainingInfo, EpochInfo
 
 import numpy as np
 from skopt import dump
-from skopt import gp_minimize
+from skopt import dummy_minimize
 from skopt.callbacks import CheckpointSaver
 
 
@@ -33,7 +33,7 @@ def objective(hparams):
     print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
     discount_factor = float(discount_factor)
 
-    device = torch.device('cuda')
+    device = torch.device('cuda:2')
     seed = 1001
 
     # Set random seed in python std lib, numpy and pytorch
@@ -116,8 +116,8 @@ def main():
     start = time.time()
     checkpoint_saver = CheckpointSaver("./checkpoint.pkl")
     space = [(2,10), (2,8), (3,8), (0.00, .99)]
-    res_gp = gp_minimize(objective, space, n_calls=20, random_state=0, callback=[checkpoint_saver], verbose=True)
-    dump(res_gp, 'result200.pkl')
+    res_rand = dummy_minimize(objective, space, n_calls=20, random_state=0, callback=[checkpoint_saver], verbose=True)
+    dump(res_rand, 'rand200.pkl')
     print(f'Runtime: {time.time() - start}')
 
 
