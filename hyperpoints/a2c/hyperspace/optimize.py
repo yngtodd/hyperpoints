@@ -1,5 +1,6 @@
 import time
 import torch
+import argparse
 import torch.optim as optim
 
 from vel.rl.metrics import EpisodeRewardMetric
@@ -23,9 +24,7 @@ from vel.rl.env_roller.vec.step_env_roller import StepEnvRoller
 from vel.api.info import TrainingInfo, EpochInfo
 
 import numpy as np
-from skopt import dump
-from skopt import gp_minimize
-from skopt.callbacks import CheckpointSaver
+from hyperspace import hyperdrive
 
 
 def objective(hparams):
@@ -113,11 +112,13 @@ def objective(hparams):
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Setup experiment.')
+    parser.add_argument('--results_dir', type=str, help='Path to results directory.')
+    args = parser.parse_args()
+
     start = time.time()
-    checkpoint_saver = CheckpointSaver("./checkpoint.pkl")
     space = [(2,10), (2,8), (3,8), (0.00, .99)]
-    res_gp = gp_minimize(objective, space, n_calls=20, random_state=0, callback=[checkpoint_saver], verbose=True)
-    dump(res_gp, 'result200.pkl')
+    hyperdrive(objective, space, n_calls=20, results_path=args.results_dir, random_state=0, checkpoints=True, verbose=True)
     print(f'Runtime: {time.time() - start}')
 
 
