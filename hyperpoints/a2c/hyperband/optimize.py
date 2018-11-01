@@ -44,8 +44,11 @@ def objective(hparams, iterations):
         ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
     ).instantiate(parallel_envs=16, seed=seed)
 
-    #hparams = Config(kernel1, kernel2, kernel3)
-    hparams = Config(8,5,5)
+#    kernel1 = float(kernel1)
+#    kernel2 = float(kernel2)
+#    kernel3 = float(kernel3)
+    hparams = Config(kernel1, kernel2, kernel3)
+    #hparams = Config(8,5,5)
 
     model = PolicyGradientModelFactory(
         backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4, hparams=hparams)
@@ -113,8 +116,8 @@ def objective(hparams, iterations):
 
 def main():
     start = time.time()
-    space = [(2,10), (2,8), (3,8), (0.00, .99)]
-    res = hyperband(objective, space, 20, max_iter=200, eta=3, verbose=True, random_state=0)
+    space = [(2,10), (2,8), (3,6), (0.00, .99)]
+    res = hyperband(objective, space, n_evaluations=20, max_iter=200, eta=3, verbose=True, random_state=0)
     dump(res, 'result200.pkl')
     print(f'Runtime: {time.time() - start}')
 
