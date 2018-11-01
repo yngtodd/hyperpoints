@@ -33,7 +33,7 @@ def objective(hparams):
     print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
     discount_factor = float(discount_factor)
 
-    device = torch.device('cuda:3')
+    device = torch.device('cuda')
     seed = 1001
 
     # Set random seed in python std lib, numpy and pytorch
