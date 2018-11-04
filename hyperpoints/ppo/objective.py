@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 import torch.optim as optim
 
 from vel.rl.metrics import EpisodeRewardMetric
