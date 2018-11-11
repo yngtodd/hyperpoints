@@ -11,7 +11,6 @@ from vel.rl.vecenv.subproc import SubprocVecEnvWrapper
 
 from vel.rl.models.policy_gradient_model import PolicyGradientModelFactory
 from vel.rl.models.backbone.nature_cnn import NatureCnnFactory
-from vel.rl.models.backbone.nature_cnn import Config
 
 from vel.rl.reinforcers.on_policy_iteration_reinforcer import (
     OnPolicyIterationReinforcer, OnPolicyIterationReinforcerSettings
@@ -45,11 +44,9 @@ def objective(hparams):
         ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
     ).instantiate(parallel_envs=16, seed=seed)
 
-    #hparams = Config(kernel1, kernel2, kernel3)
-    hparams = Config(8,5,5)
-
     model = PolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4, hparams=hparams)
+        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4,
+                                  kernel1=kernel1, kernel2=kernel2, kernel3=kernel3)
     ).instantiate(action_space=vec_env.action_space)
 
     # Reinforcer - an object managing the learning process

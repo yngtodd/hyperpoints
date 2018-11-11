@@ -12,7 +12,6 @@ from vel.rl.vecenv.subproc import SubprocVecEnvWrapper
 
 from vel.rl.models.policy_gradient_model import PolicyGradientModelFactory
 from vel.rl.models.backbone.nature_cnn import NatureCnnFactory
-from vel.rl.models.backbone.nature_cnn import Config
 
 from vel.rl.reinforcers.on_policy_iteration_reinforcer import (
     OnPolicyIterationReinforcer, OnPolicyIterationReinforcerSettings
@@ -32,7 +31,7 @@ def objective(hparams):
     print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
     discount_factor = float(discount_factor)
 
-    device = torch.device('cuda')
+    device = torch.device('cuda:0')
     seed = 1001
 
     # Set random seed in python std lib, numpy and pytorch
@@ -44,11 +43,9 @@ def objective(hparams):
         ClassicAtariEnv('BreakoutNoFrameskip-v4'), frame_history=4
     ).instantiate(parallel_envs=16, seed=seed)
 
-    #hparams = Config(kernel1, kernel2, kernel3)
-    hparams = Config(8,5,5)
-
     model = PolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4, hparams=hparams)
+        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4,
+                                  kernel1=kernel1, kernel2=kernel2, kernel3=kernel3)
     ).instantiate(action_space=vec_env.action_space)
 
     # Reinforcer - an object managing the learning process
@@ -117,8 +114,8 @@ def main():
     args = parser.parse_args()
 
     start = time.time()
-    space = [(2,10), (2,8), (3,8), (0.00, .99)]
-    hyperdrive(objective, space, n_calls=20, results_path=args.results_dir, random_state=0, checkpoints=True, verbose=True)
+    space = [(2,10), (2,8), (3,6), (0.00, .99)]
+    hyperdrive(objective, space, n_iterations=20, results_path=args.results_dir, random_state=0, checkpoints=True, verbose=True)
     print(f'Runtime: {time.time() - start}')
 
 
