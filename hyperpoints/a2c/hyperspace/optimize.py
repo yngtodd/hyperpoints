@@ -24,6 +24,11 @@ from vel.api.info import TrainingInfo, EpochInfo
 
 import numpy as np
 from hyperspace import hyperdrive
+from mpi4py import MPI
+
+
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
 
 
 def objective(hparams):
@@ -31,7 +36,11 @@ def objective(hparams):
     print(f'kernels: {kernel1}, {kernel2}, {kernel3}')
     discount_factor = float(discount_factor)
 
-    device = torch.device('cuda:0')
+    if rank % 2 == 0:
+        device = torch.device('cuda:0')
+    else:
+        device = torch.device('cuda:3')
+
     seed = 1001
 
     # Set random seed in python std lib, numpy and pytorch
