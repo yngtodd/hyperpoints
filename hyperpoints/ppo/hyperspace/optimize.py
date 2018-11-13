@@ -2,7 +2,7 @@ import time
 import argparse
 import numpy as np
 
-from hyperpoints.ppo.hyperspace import ppo_objective
+from hyperpoints.ppo.hyperspace import ppo_dist_objective
 from hyperspace import hyperdrive
 
 
@@ -22,7 +22,7 @@ def main():
              (2.5e-4, 0.1),
              (0.5, 0.9)]
 
-    hyperdrive(objective=ppo_objective,
+    hyperdrive(objective=ppo_dist_objective,
                hyperparameters=space,
                results_path=args.results_dir,
                model="GP",
