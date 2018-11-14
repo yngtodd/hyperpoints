@@ -2,7 +2,7 @@ import time
 import argparse
 import numpy as np
 
-from hyperpoints.ppo.hyperspace import ppo_dist_objective
+from objective import ppo_dist_objective
 from hyperspace import hyperdrive
 
 
@@ -15,7 +15,7 @@ def main():
 
     space = [(2,10),
              (2,8),
-             (3,8),
+             (3,6),
              (0.00, .99),
              (0.001, 0.1),
              (0.5, 0.99),

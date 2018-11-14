@@ -85,7 +85,7 @@ def ppo_dist_objective(hparams):
     # These are just helper functions for that
     vec_env = SubprocVecEnvWrapper(
         ClassicAtariEnv('QbertNoFrameskip-v4'), frame_history=4
-    ).instantiate(parallel_envs=8, seed=seed)
+    ).instantiate(parallel_envs=1, seed=seed)
 
     # Again, use a helper to create a model
     # But because model is owned by the reinforcer, model should not be accessed using this variable
