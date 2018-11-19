@@ -71,7 +71,7 @@ def ppo_dist_objective(hparams):
 
     # Set random seed in python std lib, numpy and pytorch
     set_seed(seed)
-
+    print(f'\nRANK: {rank}\n')
     kernel1 = int(hparams[0])
     kernel2 = int(hparams[1])
     kernel3 = int(hparams[2])
@@ -127,16 +127,25 @@ def ppo_dist_objective(hparams):
 
     # Model optimizer
     optimizer = optim.Adam(reinforcer.model.parameters(), lr=lr, eps=1.0e-5)
-
-    # Overall information store for training information
-    training_info = TrainingInfo(
-        metrics=[
-            EpisodeRewardMetric('episode_rewards'),  # Calculate average reward from episode
-        ],
-        callbacks=[
-            StdoutStreaming(), # Print live metrics every epoch to standard output
-            FrameTracker()]    # We need frame tracker to track the progress of learning
-    )
+    if rank == 0:
+        # Overall information store for training information
+        training_info = TrainingInfo(
+            metrics=[
+                EpisodeRewardMetric('episode_rewards'),  # Calculate average reward from episode
+            ],
+            callbacks=[
+                StdoutStreaming(), # Print live metrics every epoch to standard output
+                FrameTracker()]    # We need frame tracker to track the progress of learning
+        )
+    else:
+        # Overall information store for training information
+        training_info = TrainingInfo(
+            metrics=[
+                EpisodeRewardMetric('episode_rewards'),  # Calculate average reward from episode
+            ],
+            callbacks=[
+                FrameTracker()]    # We need frame tracker to track the progress of learning
+        )
 
     training_info['total_frames'] = 1.1e7  # How many frames in the whole training process
 
