@@ -6,6 +6,8 @@ Bookkeeping for A2C experiments.
 
 **Experiment Progress**
 
+.. class:: center
+
 +----------------+----------------+----------------+
 | Algorithm      | Optimization   | Evaluation     |
 +================+================+================+
