@@ -2,7 +2,7 @@ import time
 import argparse
 import numpy as np
 
-from objective import enduro_dist_dqn
+from objective import enduro_acer
 from hyperspace import hyperdrive
 
 
@@ -15,12 +15,13 @@ def main():
 
     space = [(2,10),
              (2,8),
-             (3,6),
-             (0.00, .99),
-             (50000, 250000),
-             (8, 32)]
+             (2,6),
+             (0.00, .1),
+             (0.1, 0.8),
+             (1.0, 20.0),
+             (0.0, 1.0)]
 
-    hyperdrive(objective=enduro_dist_dqn,
+    hyperdrive(objective=enduro_acer,
                hyperparameters=space,
                results_path=args.results_dir,
                checkpoints_path=args.results_dir,
@@ -34,4 +35,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

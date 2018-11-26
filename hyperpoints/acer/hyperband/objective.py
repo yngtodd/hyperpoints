@@ -21,10 +21,20 @@ from vel.rl.env_roller.vec.replay_q_env_roller import ReplayQEnvRoller
 
 from vel.api.info import TrainingInfo, EpochInfo
 
+import numpy as np
 
-def enduro_acer():
-    device = torch.device('cuda:1')
+
+def enduro_acer(hparams, iterations):
+    device = torch.device('cuda:8')
     seed = 1001
+
+    kernel1 = int(hparams[0])
+    kernel2 = int(hparams[1])
+    kernel3 = int(hparams[2])
+    entropy = float(hparams[3])
+    q_coefficient = float(hparams[4])
+    rho_cap = float(hparams[5])
+    retrace_rho_cap = float(hparams[6])
 
     # Set random seed in python std lib, numpy and pytorch
     set_seed(seed)
@@ -39,7 +49,8 @@ def enduro_acer():
     # But because model is owned by the reinforcer, model should not be accessed using this variable
     # but from reinforcer.model property
     model = QPolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4)
+        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4,
+                                  kernel1=kernel1, kernel2=kernel2, kernel3=kernel3)
     )
 
     # Reinforcer - an object managing the learning process
@@ -55,10 +66,10 @@ def enduro_acer():
         algo=AcerPolicyGradient(
             model_factory=model,
             trust_region=False,
-            entropy_coefficient=0.01,
-            q_coefficient=0.5,
-            rho_cap=10.0,
-            retrace_rho_cap=1.0,
+            entropy_coefficient=entropy,
+            q_coefficient=q_coefficient,
+            rho_cap=rho_cap,
+            retrace_rho_cap=retrace_rho_cap,
         ),
         env_roller=ReplayQEnvRoller(
             environment=vec_env,
@@ -88,7 +99,8 @@ def enduro_acer():
     training_info.on_train_begin()
 
     # Let's make 100 batches per epoch to average metrics nicely
-    num_epochs = int(1.1e7 / (5 * 16) / 100)
+    #num_epochs = int(1.1e7 / (5 * 16) / 100)
+    num_epochs = iterations
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
@@ -103,6 +115,9 @@ def enduro_acer():
 
     training_info.on_train_end()
 
-
-if __name__ == '__main__':
-    enduro_acer()
+    # Use the average of the last 25% of rewards to determine score.
+    endgame = int(num_epochs * .25)
+    history = training_info.history.frame()
+    rewards = np.array(history['episode_rewards'])
+    endgame_average = sum(rewards[-endgame:])/endgame
+    return -endgame_average

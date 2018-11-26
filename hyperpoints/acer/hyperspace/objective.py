@@ -30,7 +30,6 @@ size = comm.Get_size()
 
 
 def enduro_acer(hparams):
-    device = torch.device('cuda:1')
     seed = 1001
 
     kernel1 = int(hparams[0])
@@ -40,6 +39,25 @@ def enduro_acer(hparams):
     q_coefficient = float(hparams[4])
     rho_cap = float(hparams[5])
     retrace_rho_cap = float(hparams[6])
+
+    if rank in range(0, 16):
+        cuda_rank = 'cuda:0'
+    elif rank in range(16, 32):
+        cuda_rank = 'cuda:1'
+    elif rank in range(32, 48):
+        cuda_rank = 'cuda:2'
+    elif rank in range(48, 64):
+        cuda_rank = 'cuda:3'
+    elif rank in range(64, 80):
+        cuda_rank = 'cuda:4'
+    elif rank in range(80, 96):
+        cuda_rank = 'cuda:5'
+    elif rank in range(96, 112):
+        cuda_rank = 'cuda:6'
+    elif rank in range(112, 128):
+        cuda_rank = 'cuda:7'
+
+    device = torch.device(cuda_rank)
 
     # Set random seed in python std lib, numpy and pytorch
     set_seed(seed)
@@ -54,7 +72,7 @@ def enduro_acer(hparams):
     # But because model is owned by the reinforcer, model should not be accessed using this variable
     # but from reinforcer.model property
     model = QPolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4
+        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4,
                                   kernel1=kernel1, kernel2=kernel2, kernel3=kernel3)
     )
 
@@ -81,7 +99,7 @@ def enduro_acer(hparams):
             device=device,
             buffer_capacity=50000,
             buffer_initial_size=10000,
-            frame_stack_compensation=1,
+            frame_stack_compensation=4,
             number_of_steps=20,
             discount_factor=0.99
         )
