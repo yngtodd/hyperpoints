@@ -20,6 +20,7 @@ from vel.rl.algo.policy_gradient.acer import AcerPolicyGradient
 from vel.rl.env_roller.vec.replay_q_env_roller import ReplayQEnvRoller
 
 from vel.api.info import TrainingInfo, EpochInfo
+import numpy as np
 
 
 def enduro_acer(hparams):
@@ -97,7 +98,8 @@ def enduro_acer(hparams):
     training_info.on_train_begin()
 
     # Let's make 100 batches per epoch to average metrics nicely
-    num_epochs = int(1.1e7 / (5 * 16) / 100)
+    #num_epochs = int(1.1e7 / (5 * 16) / 100)
+    num_epochs = 200
 
     # Normal handrolled training loop
     for i in range(1, num_epochs+1):
