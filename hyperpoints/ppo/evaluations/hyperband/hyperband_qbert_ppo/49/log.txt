@@ -1,0 +1,18 @@
+Logging to /home/ygx/src/vel/output/openai/hyperband_qbert_ppo/49
+-----------------------------------
+| P01:episode_rewards  | 0        |
+| P09:episode_rewards  | 125      |
+| PMM:episode_rewards  | 84.6     |
+| advantage_norm       | 16       |
+| approx_kl_divergence | 3.36e+06 |
+| clip_fraction        | 0.227    |
+| episode_length       | 589      |
+| epoch_idx            | 1        |
+| explained_variance   | -0.54    |
+| fps                  | 174      |
+| frames               | 10240    |
+| grad_norm            | 1.44e+09 |
+| policy_entropy       | 0.228    |
+| policy_loss          | 0.0689   |
+| value_loss           | 1.47e+09 |
+-----------------------------------
