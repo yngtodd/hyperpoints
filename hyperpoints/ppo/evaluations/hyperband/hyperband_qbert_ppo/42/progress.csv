@@ -1,0 +1,2 @@
+approx_kl_divergence,value_loss,policy_entropy,explained_variance,clip_fraction,grad_norm,PMM:episode_rewards,fps,policy_loss,P01:episode_rewards,P09:episode_rewards,advantage_norm,epoch_idx,frames,episode_length
+125768645.90507579,2070158135.3493176,0.6660145215190476,-6.991141940280795,0.3852783203125,1566671616.6175497,146.875,176,0.07302330694510602,125.0,217.49999999999997,15.968649178743362,1,10240,355.9583333333333

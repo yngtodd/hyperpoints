@@ -24,7 +24,7 @@ import numpy as np
 
 
 def enduro_acer(hparams):
-    device = torch.device('cuda:8')
+    device = torch.device('cuda:9')
     seed = 1001
 
     kernel1 = int(hparams[0])
