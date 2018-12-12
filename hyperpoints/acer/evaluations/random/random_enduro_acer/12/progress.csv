@@ -1,0 +1,2 @@
+frames,PMM:episode_rewards,advantage_norm,epoch_idx,rollout_prob_std,P01:episode_rewards,episode_length,explained_variance,q_loss,P09:episode_rewards,policy_entropy,grad_norm,policy_gradient_bias_correction,policy_gradient_loss,fps,avg_q_selected,model_prob_std,avg_q_retraced,policy_loss
+7200,0.0,0.21063253370424112,1,0.036216475364441676,0.0,0,-5.376049200693767,0.0021929994700864578,0.0,2.034988608956337,0.3309019347868985,0.0,0.0009189212824518715,396,0.007179159218018564,0.036216475442051886,0.006840280662678803,0.0009189212824518715

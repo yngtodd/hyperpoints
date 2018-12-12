@@ -1,0 +1,2 @@
+policy_loss,P01:episode_rewards,policy_entropy,PMM:episode_rewards,frames,explained_variance,policy_gradient_bias_correction,policy_gradient_loss,avg_q_retraced,P09:episode_rewards,epoch_idx,fps,advantage_norm,grad_norm,model_prob_std,avg_q_selected,rollout_prob_std,episode_length,q_loss
+-5.0312205422642366e-05,0.0,2.063059272368749,0.0,7200,-5.604400523503622,0.0,-5.0312205422642366e-05,-0.00020661973394453526,0.0,1,429,0.2326315602908532,0.3068258146365155,0.03234628715241949,1.9016722217202186e-05,0.032346286531537774,0,0.0028925221540096876

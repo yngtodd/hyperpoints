@@ -1,0 +1,22 @@
+Logging to /home/ygx/src/vel/output/openai/random_enduro_acer/36
+---------------------------------------
+| P01:episode_rewards     | 0         |
+| P09:episode_rewards     | 0         |
+| PMM:episode_rewards     | 0         |
+| advantage_norm          | 0.098     |
+| avg_q_retraced          | 0.000691  |
+| avg_q_selected          | -2.76e-06 |
+| episode_length          | 0         |
+| epoch_idx               | 1         |
+| explained_variance      | -5.05     |
+| fps                     | 428       |
+| frames                  | 7200      |
+| grad_norm               | 0.0625    |
+| model_prob_std          | 0.0111    |
+| policy_entropy          | 2.18      |
+| policy_gradient_bias... | 0         |
+| policy_gradient_loss    | 0.000548  |
+| policy_loss             | 0.000548  |
+| q_loss                  | 0.000357  |
+| rollout_prob_std        | 0.0111    |
+---------------------------------------
