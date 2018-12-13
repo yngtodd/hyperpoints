@@ -73,8 +73,10 @@ def enduro_acer(hparams):
     # But because model is owned by the reinforcer, model should not be accessed using this variable
     # but from reinforcer.model property
     model = QPolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4,
-                                  kernel1=kernel1, kernel2=kernel2, kernel3=kernel3)
+        backbone=NatureCnnFactory(
+            input_width=84, input_height=84, input_channels=4,
+            kernel1=kernel1, kernel2=kernel2, kernel3=kernel3
+        )
     )
 
     # Reinforcer - an object managing the learning process
@@ -93,7 +95,7 @@ def enduro_acer(hparams):
             entropy_coefficient=entropy,
             q_coefficient=q_coefficient,
             rho_cap=rho_cap,
-            retrace_rho_cap=retrace_rho_cap,
+            retrace_rho_cap=retrace_rho_cap
         ),
         env_roller=ReplayQEnvRoller(
             environment=vec_env,
@@ -104,7 +106,7 @@ def enduro_acer(hparams):
             number_of_steps=20,
             discount_factor=0.99
         )
-    )
+     )
 
     # Model optimizer
     optimizer = optim.RMSprop(reinforcer.model.parameters(), lr=7.0e-4, eps=1e-3)

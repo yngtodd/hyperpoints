@@ -47,7 +47,7 @@ def enduro_acer(hparams):
     # But because model is owned by the reinforcer, model should not be accessed using this variable
     # but from reinforcer.model property
     model = QPolicyGradientModelFactory(
-        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4
+        backbone=NatureCnnFactory(input_width=84, input_height=84, input_channels=4,
                                   kernel1=kernel1, kernel2=kernel2, kernel3=kernel3)
     )
 
