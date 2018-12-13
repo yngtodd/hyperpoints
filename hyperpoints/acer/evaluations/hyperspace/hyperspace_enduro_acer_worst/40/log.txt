@@ -1,0 +1,22 @@
+Logging to /home/ygx/src/vel/output/openai/hyperspace_enduro_acer_worst/40
+--------------------------------------
+| P01:episode_rewards     | 0        |
+| P09:episode_rewards     | 0        |
+| PMM:episode_rewards     | 0        |
+| advantage_norm          | 0.0268   |
+| avg_q_retraced          | 0.00524  |
+| avg_q_selected          | 0.00548  |
+| episode_length          | 0        |
+| epoch_idx               | 1        |
+| explained_variance      | -8.19    |
+| fps                     | 386      |
+| frames                  | 7200     |
+| grad_norm               | 0.00943  |
+| model_prob_std          | 0.00434  |
+| policy_entropy          | 2.2      |
+| policy_gradient_bias... | 0        |
+| policy_gradient_loss    | -0.0002  |
+| policy_loss             | -0.0002  |
+| q_loss                  | 1.68e-05 |
+| rollout_prob_std        | 0.00434  |
+--------------------------------------
